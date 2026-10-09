@@ -41,11 +41,8 @@ habe-fashion-web/
 │   ├── architecture.md
 │   └── features/
 ├── docs/
-│   ├── architecture/
 │   └── adr/
-├── .opencode/
-│   ├── agents/
-│   ├── commands/
+├── .agents/
 │   └── skills/
 ├── .gitignore
 └── README.md
@@ -60,6 +57,14 @@ habe-fashion-web/
 - The frontend and backend may be built and deployed independently.
 - Secrets, local environment files, generated files, and dependency directories must be excluded from Git as appropriate.
 - `.env.example` may document the names of required environment variables, using placeholder or empty values rather than real credentials.
+- Agent skills live in `.agents/skills/`, following the Agent Skills layout. Installed third-party skills are versioned so the development environment is reproducible.
+
+### Git branches
+
+- `main` is the production branch. It only receives reviewed changes.
+- `develop` is the integration branch where day-to-day work lands.
+
+Feature work branches from `develop`. Changes reach `main` through a pull request after review and verification.
 
 **Consequence:** The repository is prepared for a separate backend, but the initial MVP does not need to implement or deploy one. The backend directory may remain a documented placeholder until its first approved requirement is ready.
 
@@ -132,7 +137,9 @@ The frontend is responsible for:
 
 Use Next.js rendering capabilities appropriate for each page. Prefer static generation or server rendering when suitable for SEO and performance.
 
-Keep reusable UI components separate from content and configuration. The approach to storing and editing portfolio content must be finalized before implementation; the MVP should not require a database merely to display mostly static information.
+Keep reusable UI components separate from content and configuration.
+
+Portfolio content is stored as typed TypeScript modules under `src/content/`, one module per concern. This approach is recorded in `docs/adr/ADR-007-portfolio-content.md`. It satisfies REQ-CONTENT-002: designer content replaces placeholder content by editing data files only, and invalid content fails the production build instead of rendering incorrectly. The MVP does not require a database merely to display mostly static information.
 
 Avoid introducing global state management unless the actual functionality requires it.
 
@@ -233,8 +240,9 @@ The following remain TBD until the content-management workflow is defined:
 
 - Whether assets are uploaded manually through the Cloudinary dashboard or through a future administrative interface.
 - Naming and folder conventions.
-- Whether a media manifest or content configuration is needed for the MVP.
 - The upload and authorization strategy for a future backoffice.
+
+Portfolio media references are declared as typed entries in `src/content/`, which resolves the earlier question of whether a media manifest is needed for the MVP. No separate manifest format is introduced.
 
 Cloudinary identifiers and URLs should be managed consistently to make future gallery updates and migrations easier.
 
@@ -410,42 +418,49 @@ The architecture must respect the following constraints:
 
 The following decisions remain unresolved and must be tracked rather than guessed.
 
-| Decision                         | Status                                    | When to resolve                                      |
-| -------------------------------- | ----------------------------------------- | ---------------------------------------------------- |
-| Frontend framework               | Next.js selected as proposed stack        | Before frontend implementation                       |
-| Frontend styling                 | Tailwind CSS selected as proposed stack   | Before frontend implementation                       |
-| Backend stack                    | Node.js, Express, and TypeScript proposed | Before the first backend feature                     |
-| Backend implementation timing    | After the frontend-only MVP               | When a requirement needs server-side functionality   |
-| PostgreSQL access library        | TBD                                       | Before database implementation                       |
-| Database migration tooling       | TBD                                       | Before the first schema change                       |
-| Database hosting                 | TBD                                       | When persistent application data is required         |
-| Frontend hosting                 | TBD                                       | Before production deployment                         |
-| Backend hosting                  | TBD                                       | Before deploying the backend                         |
-| Deployment arrangement           | TBD; compare costs and requirements       | Before selecting production infrastructure           |
-| API error format                 | TBD                                       | Before the first API endpoint                        |
-| API versioning                   | TBD                                       | Before public or versioned API contracts are needed  |
-| API documentation                | TBD                                       | Before the API grows beyond its initial endpoints    |
-| Frontend testing framework       | TBD                                       | Before implementing automated UI tests               |
-| Backend testing framework        | TBD                                       | Before the first backend feature                     |
-| Portfolio content management     | TBD                                       | Before deciding how the designer will update content |
-| Cloudinary upload workflow       | TBD                                       | Before implementing content uploads                  |
-| Authentication and authorization | Future requirement; details TBD           | Before protected administrative features             |
-| Payment provider                 | Future e-commerce decision                | Before checkout implementation                       |
-| Custom domain                    | TBD                                       | Before production launch                             |
+| Decision                         | Status                                | Resolved by                     |
+| -------------------------------- | ------------------------------------- | ------------------------------- |
+| Frontend framework               | Resolved: Next.js with React and TypeScript | ADR-001                    |
+| Frontend styling                 | Resolved: Tailwind CSS                | ADR-001                         |
+| Monorepo structure               | Resolved: separate applications      | ADR-002                         |
+| Media provider                   | Resolved: Cloudinary                  | ADR-003                         |
+| Backend implementation timing    | Resolved: deferred until required    | ADR-005                         |
+| Portfolio content management     | Resolved: typed TypeScript content   | ADR-007                         |
+| Frontend testing framework       | Resolved: Vitest with React Testing Library | ADR-008                  |
+| Backend stack                    | Node.js, Express, and TypeScript proposed | Before the first backend feature |
+| PostgreSQL access library        | TBD                                   | Before database implementation   |
+| Database migration tooling       | TBD                                   | Before the first schema change   |
+| Database hosting                 | TBD                                   | When persistent application data is required |
+| Frontend hosting                 | TBD                                   | Before production deployment     |
+| Backend hosting                  | TBD                                   | Before deploying the backend     |
+| Deployment arrangement           | TBD; compare costs and requirements | Before selecting production infrastructure |
+| API error format                 | TBD                                   | Before the first API endpoint    |
+| API versioning                   | TBD                                   | Before public or versioned API contracts are needed |
+| API documentation                | TBD                                   | Before the API grows beyond its initial endpoints |
+| Backend testing framework        | TBD                                   | Before the first backend feature |
+| Cloudinary upload workflow       | TBD                                   | Before implementing content uploads |
+| Authentication and authorization | Future requirement; details TBD       | Before protected administrative features |
+| Payment provider                 | Future e-commerce decision            | Before checkout implementation   |
+| Custom domain                    | TBD                                   | Before production launch         |
 
 ## 16. Proposed Architecture Decision Records (ADRs)
 
 Create individual records under `docs/adr/` when decisions need a durable rationale.
 
-Potential records:
+Existing records:
 
-- `ADR-001`: Select Next.js for the frontend.
-- `ADR-002`: Keep frontend and backend as separate applications in one monorepo.
-- `ADR-003`: Use Cloudinary for image and video delivery.
-- `ADR-004`: Plan for PostgreSQL as the relational database.
-- `ADR-005`: Defer backend implementation until a concrete requirement needs it.
-- `ADR-006`: Select hosting and deployment strategy after comparing costs and requirements.
-- `ADR-007`: Select PostgreSQL access and migration tooling when database implementation begins.
+- `ADR-001`: Select Next.js for the frontend. (Accepted)
+- `ADR-002`: Keep frontend and backend as separate applications in one monorepo. (Accepted)
+- `ADR-003`: Use Cloudinary for image and video delivery. (Accepted)
+- `ADR-004`: Plan for PostgreSQL as the relational database. (Proposed)
+- `ADR-005`: Defer backend implementation until a concrete requirement needs it. (Accepted)
+- `ADR-006`: Select hosting and deployment strategy after comparing costs and requirements. (Deferred)
+- `ADR-007`: Store portfolio content as typed TypeScript modules. (Accepted)
+- `ADR-008`: Test the frontend with Vitest and React Testing Library. (Accepted)
+
+Potential future records:
+
+- `ADR-009`: Select PostgreSQL access and migration tooling when database implementation begins.
 
 Each ADR should include:
 

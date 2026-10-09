@@ -368,9 +368,26 @@ The product should be structured so that future development can be performed saf
 
 ## 14. Open Product Decisions
 
+### 14.1 Brand Identity (Partially Resolved)
+
+The following brand facts are confirmed:
+
+- **Designer:** Hannia Farfán.
+- **Official name:** Habe.
+- **Wordmark form:** HA·BE, using the dot from the logo lockup. The wordmark is used in visible site copy and metadata; the plain form "Habe" is used everywhere a simplified name is appropriate.
+- **Palette:** The primary background is black (`#000000`). The brand accent is pink (`#f6b1ce`).
+
+Text on the pink accent must be black. Black on the brand pink measures a 12.1:1 contrast ratio (WCAG AAA). White on the pink measures 1.7:1 and fails even the 3:1 minimum for large text, so white must never be placed on the brand pink.
+
+The following remain open:
+
+- The logo asset with a transparent background, its variant for favicon and social sharing, and the resolved typography choices.
+- The full visual design system.
+
+### 14.2 Remaining Open Decisions
+
 The following decisions remain open and should not be assumed until explicitly defined:
 
-- Final brand identity.
 - Final website copy.
 - Final product/category naming.
 - Final social media platforms.
@@ -380,7 +397,6 @@ The following decisions remain open and should not be assumed until explicitly d
 - Exact ecommerce workflow.
 - Exact backoffice functionality.
 - Domain name.
-- Final visual design system.
 
 The designer's WhatsApp number will be provided separately when required for implementation.
 
