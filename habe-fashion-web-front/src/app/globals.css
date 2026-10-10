@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/*
+ * Brand tokens (specs/product.md §14.1, .agents/skills/brand-design).
+ *
+ * brand-pink is the content surface and brand-black is the dominant ink. The
+ * header and footer are black bands so that pink text has a field to sit on
+ * and the page keeps surface contrast instead of reading flat.
+ *
+ * Black on brand-pink measures 12.10:1 (WCAG AAA). Pink on brand-black also
+ * measures 12.10:1. White on brand-pink measures 1.74:1 and fails, so the
+ * pink surface never carries white text.
+ */
+@theme {
+  --color-brand-black: #000000;
+  --color-brand-pink: #f6b1ce;
+
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-work-sans), Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: var(--color-brand-pink);
+  color: var(--color-brand-black);
+  font-family: var(--font-sans);
+}
+
+/*
+ * REQ-A11Y-002: interactive elements must show a visible focus state when
+ * navigated by keyboard. :focus-visible keeps it off pointer interactions.
+ */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/*
+ * REQ-SEO-004 and REQ-A11Y: reduced motion is respected site-wide.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
