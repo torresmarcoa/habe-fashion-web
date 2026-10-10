@@ -82,18 +82,12 @@ it("exposes a primary navigation landmark", () => {
       />,
     );
 
-    expect(screen.getByRole("link", { name: "Inicio" })).toHaveAttribute(
-      "href",
-      "#inicio",
-    );
-    expect(screen.getByRole("link", { name: "Galería" })).toHaveAttribute(
-      "href",
-      "#galeria",
-    );
-    expect(screen.getByRole("link", { name: "Contacto" })).toHaveAttribute(
-      "href",
-      "#contacto",
-    );
+    for (const item of siteContent.navigation) {
+      expect(screen.getByRole("link", { name: item.label })).toHaveAttribute(
+        "href",
+        `#${item.sectionId}`,
+      );
+    }
   });
 
   it("gives the wordmark an accessible name instead of reading the dot", () => {

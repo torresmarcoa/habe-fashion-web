@@ -26,4 +26,32 @@ export const runtimeConfig = {
    */
   instagramUrl: process.env.NEXT_PUBLIC_INSTAGRAM_URL?.trim() || undefined,
   facebookUrl: process.env.NEXT_PUBLIC_FACEBOOK_URL?.trim() || undefined,
+  youtubeUrl: process.env.NEXT_PUBLIC_YOUTUBE_URL?.trim() || undefined,
+
+  /**
+   * Handle shown on the Instagram button in the footer.
+   */
+  instagramHandle: process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE?.trim() || undefined,
+
+  /**
+   * Page name shown on the Facebook button in the footer.
+   */
+  facebookHandle: process.env.NEXT_PUBLIC_FACEBOOK_HANDLE?.trim() || undefined,
+
+  /**
+   * Channel name shown on the YouTube button in the footer.
+   */
+  youtubeHandle: process.env.NEXT_PUBLIC_YOUTUBE_HANDLE?.trim() || undefined,
+
+  /**
+   * Cloudinary cloud name, used to build delivery URLs for production media
+   * (ADR-003).
+   *
+   * Falls back to this project's cloud name so production media renders
+   * without local configuration. The value is not a credential: it appears in
+   * every delivery URL, so it is safe in client-side code (REQ-SEC-003).
+   * Override it only if the account changes.
+   */
+  cloudinaryCloudName:
+    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME?.trim() || "jtkidlbp",
 };

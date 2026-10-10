@@ -6,7 +6,7 @@
  * (REQ-CONTENT-002, ADR-007).
  */
 
-export type SocialPlatform = "instagram" | "facebook" | "tiktok" | "pinterest";
+export type SocialPlatform = "instagram" | "facebook" | "youtube" | "tiktok" | "pinterest";
 
 export interface SocialProfile {
   platform: SocialPlatform;
@@ -32,6 +32,12 @@ export interface SiteContent {
   description: string;
   navigation: NavigationItem[];
   socialProfiles: SocialProfile[];
+  /**
+   * Handles displayed alongside each platform in the footer. A platform with
+   * no handle falls back to its label rather than showing an empty slot
+   * (REQ-CONTENT-004).
+   */
+  socialHandles?: Partial<Record<SocialPlatform, string>>;
 }
 
 export interface DesignCategory {
