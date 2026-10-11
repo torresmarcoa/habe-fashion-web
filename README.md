@@ -37,7 +37,19 @@ Requirements are identified as `REQ-<AREA>-<NNN>`. Work should reference the req
 
 ## Development
 
-Setup, verification, and build commands are documented in `docs/engineering-rules.md` once the frontend application is established.
+The frontend application lives in `habe-fashion-web-front/`. Its setup, verification, and build commands are documented in `habe-fashion-web-front/README.md`.
+
+The required verification command for the frontend is:
+
+```bash
+npm run verify
+```
+
+This runs TypeScript type checking, ESLint, the test suite, and a production build. Do not claim a check passed unless it was executed.
+
+## Git Branches
+
+`main` is the production branch and only receives reviewed changes. `develop` is the integration branch for day-to-day work. Feature work branches from `develop`.
 
 ## License
 

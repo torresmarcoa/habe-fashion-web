@@ -121,6 +121,14 @@ This second diagram represents the intended direction when server-side functiona
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 
+Installed versions: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4. Node.js 20.9 is the framework minimum; Node.js 22 LTS is the development baseline.
+
+### Tooling
+
+- **Testing:** Vitest with React Testing Library and jest-dom, run in jsdom. Playwright is deferred. See `docs/adr/ADR-008-frontend-testing.md`.
+- **Linting:** ESLint via its own CLI. Next.js 16 removed `next lint`, so linting runs as a separate step and is not part of `next build`.
+- **Bundler:** Turbopack, the default in Next.js 16 for both `next dev` and `next build`.
+
 ### Responsibilities
 
 The frontend is responsible for:
@@ -333,6 +341,22 @@ Before considering an implementation complete, run the relevant available checks
 The exact scripts and thresholds will be documented in engineering rules and the project harness once the application setup is established.
 
 Do not claim a check passed unless it was actually run and its result was verified.
+
+### Current frontend verification commands
+
+Established when the frontend application was scaffolded and documented in `habe-fashion-web-front/README.md`:
+
+```bash
+npm run typecheck   # tsc --noEmit
+npm run lint        # eslint
+npm run test:run    # vitest run
+npm run build       # next build
+npm run verify      # all four, in sequence
+```
+
+`npm run verify` in `habe-fashion-web-front/` is the gate before a pull request.
+
+Note that Next.js 16 removed `next lint`, so `next build` no longer runs linting. Linting is a separate step and must be run explicitly.
 
 ## 12. Deployment Architecture
 
