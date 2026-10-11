@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img">
+  <rect width="1600" height="900" fill="#f6b1ce"/>
+  <g fill="none" stroke="#000000" stroke-width="3">
+    <rect x="40" y="40" width="1520" height="820"/>
+  </g>
+  <text x="800" y="440" text-anchor="middle" font-family="Georgia, serif" font-size="72" fill="#000000">Banner principal</text>
+  <text x="800" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#000000">1600 x 900 &middot; placeholder</text>
+</svg>
