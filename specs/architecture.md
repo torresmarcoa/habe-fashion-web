@@ -254,6 +254,22 @@ Portfolio media references are declared as typed entries in `src/content/`, whic
 
 Cloudinary identifiers and URLs should be managed consistently to make future gallery updates and migrations easier.
 
+### Media delivery
+
+Production media is delivered through Cloudinary URLs built in `src/lib/media.ts`. No Cloudinary SDK is required: assets are uploaded through the Cloudinary dashboard and referenced by public ID, so the application constructs a delivery URL but never uploads.
+
+Delivery URLs are built as:
+
+```text
+https://res.cloudinary.com/<cloudName>/image/upload/f_auto,q_auto,w_<width>/<publicId>
+```
+
+`f_auto` and `q_auto` satisfy REQ-MEDIA-001 and REQ-MEDIA-005: the browser receives a negotiated format and quality rather than an original-resolution asset. The version segment is deliberately omitted so that replacing an asset in the dashboard takes effect without a code change.
+
+`images.remotePatterns` in `next.config.ts` is restricted to `res.cloudinary.com` over HTTPS. A wildcard host would let any external URL pass through the image optimization endpoint, which REQ-SEC-004 does not permit.
+
+Media references use a single shape accepting either a Cloudinary public ID or a complete local `src`, so a placeholder can be replaced by a production asset without changing content types. When a reference has no resolvable URL, components render a neutral branded block instead of a broken image, which is what keeps the hero understandable when media is unavailable (REQ-HERO-004).
+
 ## 9. Frontend–Backend Communication
 
 ### MVP

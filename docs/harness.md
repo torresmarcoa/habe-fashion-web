@@ -72,7 +72,36 @@ Reports must distinguish:
 
 A successful build alone does not prove that all acceptance criteria are satisfied.
 
-## 6. Change Control
+## 6. Documentation Currency
+
+Documentation must describe the implementation as it actually is. A document that describes an earlier state of the code is worse than a missing document, because an agent reads it and works from it.
+
+Before reporting a task complete, review whether the change made any statement in the project documentation inaccurate, and update it in the same change. This applies to:
+
+- `AGENTS.md` and this harness document.
+- `specs/product.md`, `specs/requirements.md`, `specs/architecture.md`.
+- `docs/engineering-rules.md` and the ADRs in `docs/adr/`.
+- Application READMEs and `.env.example`.
+- Agent skills in `.agents/skills/`, including project-specific skills.
+
+The following must be updated whenever the change makes them inaccurate:
+
+- A new or removed command, script, dependency, or tool.
+- A new environment variable, in the owning application's `.env.example`.
+- A change to how content, configuration, or media is stored or delivered.
+- A change to the visual design system, including color roles.
+- A newly resolved or newly discovered open decision.
+- A new page, route, or major component that changes the documented structure.
+
+Rules for updating documentation:
+
+1. Update documentation **in the same change** as the code, not in a follow-up commit, unless the documentation depends on an unresolved decision.
+2. Never mark an open decision as resolved without a recorded decision.
+3. Do not weaken a rule to make an implementation easier.
+4. When documentation and code disagree and the correct state is unclear, report the conflict instead of assuming either is correct.
+5. A statement that describes an intended future state must say so explicitly. Documentation describes the present tense unless it says otherwise.
+
+## 7. Change Control
 
 Agents must not silently change:
 
@@ -84,13 +113,13 @@ Agents must not silently change:
 
 If a change requires a new decision, the agent must document the issue and request approval.
 
-## 7. Human Approval Boundaries
+## 8. Human Approval Boundaries
 
 Require explicit authorization for destructive operations, production deployments, irreversible changes, and actions involving private client information.
 
 Routine local checks and non-destructive development changes may proceed within the permissions already granted.
 
-## 8. Initial Implementation Priorities
+## 9. Initial Implementation Priorities
 
 1. Establish repository instructions.
 2. Inspect the actual project structure and package scripts.
@@ -99,8 +128,32 @@ Routine local checks and non-destructive development changes may proceed within 
 5. Add task-specific Commands and Skills.
 6. Introduce specialized agents only when repeated workflows justify them.
 
-## 9. Current Limitations
+## 10. Verification Commands
 
-The exact verification commands, automated checks, CI workflow, and agent permissions must be finalized after inspecting the actual repository and its application configurations.
+These commands have been implemented and executed. They are documented in `specs/architecture.md` §11 and in the owning application's README.
+
+Frontend, from `habe-fashion-web-front/`:
+
+```bash
+npm run typecheck   # tsc --noEmit
+npm run lint        # eslint
+npm run test:run    # vitest run
+npm run build       # next build
+npm run verify      # all four, in sequence
+```
+
+`npm run verify` is the gate before a pull request. Note that Next.js 16 removed `next lint`, so `next build` no longer runs linting; linting is a separate step.
+
+Always discover the actual scripts in the affected application before running checks. Never invent a command.
+
+## 11. Current Limitations
+
+The following are still unresolved and must not be documented as operational until they are implemented and tested:
+
+- **CI workflow.** No pipeline exists. Verification currently depends on running it locally.
+- **Accessibility and performance audits.** REQ-PERF-004 asks for repeatable measurements such as Lighthouse. No audit is configured yet.
+- **Responsive verification.** REQ-RESP-001 covers four device classes. Only type checks and component tests exist; no browser-driven viewport checks run automatically.
+- **Backend verification.** Not applicable until backend functionality is approved.
+- **Branch protection.** Expected on `main` and `develop` in GitHub, but repository settings are not visible from the code and must be confirmed by a human.
 
 Do not document a check as operational until it has been implemented and tested.

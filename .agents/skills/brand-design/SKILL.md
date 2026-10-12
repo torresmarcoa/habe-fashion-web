@@ -13,8 +13,19 @@ This skill exists because generic design guidance cannot know the brand. Where `
 
 | Token | Value | Role |
 |---|---|---|
-| `brand-black` | `#000000` | Primary background and text on light surfaces |
-| `brand-pink` | `#f6b1ce` | Brand accent |
+| `brand-pink` | `#f6b1ce` | Content surface. The main page background. |
+| `brand-black` | `#000000` | Text on pink, and the background of the header and footer bands |
+
+## Color Roles
+
+The layout uses two surfaces, and which one you are on determines what text color is allowed:
+
+- **Pink surface** — all content sections. Carries black text and black structural elements.
+- **Black band** — the header and the footer. Carries pink text and pink borders.
+
+This split is deliberate. A single full-bleed pink field reads flat because there is no surface contrast. The black bands frame the content and give the page structure.
+
+When adding a new section, decide its surface first, then pick text colors that are legal on it. Do not assume the page background applies to a component inside a band.
 
 - **Official name:** Habe
 - **Wordmark:** HA·BE — use the dot in visible site copy and metadata. Use the plain form "Habe" where a simplified name is appropriate.
@@ -44,7 +55,7 @@ These are measured, not estimated.
 The risk with a pastel pink on black is not the palette itself, it is the treatment. Pink and black together are a common default, so the restraint has to come from execution:
 
 - **Type carries the identity.** The palette is already decided; the personality comes from typeface choice, weight, and scale. Choose deliberately, not by reaching for a default.
-- **Restrain the pink area.** Large blocks of saturated pink read as cheap. Prefer black as the dominant surface with pink used for accents, borders, and emphasis. Reserve full pink surfaces for moments that earn them.
+- **Keep the pink a surface, not a decoration.** The pink is the page, and the black bands are the structure. The failure mode is fragmenting the pink into scattered accents on a black page, which reads as a template with a theme applied. What avoids that is the current arrangement: continuous pink content, black bands at the edges.
 - **Avoid the AI-default tells.** Cream backgrounds with serif display and terracotta accents, or near-black with a single acid accent, are recognizably generated. Neither applies here, but the underlying habit of reaching for a familiar combination does.
 - **Real content over placeholder copy.** Placeholder text is permitted in development (REQ-CONTENT-001) but must not be presented as final. Do not invent brand claims, designer biography, or portfolio descriptions.
 
@@ -59,7 +70,9 @@ Define the tokens once in the global stylesheet and reference them, rather than 
 }
 ```
 
-This yields `bg-brand-black`, `text-brand-pink`, and the corresponding variants. Use neutral Tailwind colors for borders, surfaces that are not the brand pink, and de-emphasized text.
+This yields `bg-brand-black`, `text-brand-pink`, and the corresponding variants. Use neutral Tailwind colors for de-emphasized text on black bands, and the brand tokens for everything else.
+
+The token definitions in `src/app/globals.css` also carry the contrast figures in the comment above them. Keep those in sync with the table above.
 
 ## Accessibility Checklist
 

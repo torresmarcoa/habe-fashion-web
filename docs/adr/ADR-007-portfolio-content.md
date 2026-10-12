@@ -22,14 +22,18 @@ Store portfolio content as typed TypeScript modules under `src/content/` in the 
 
 ```text
 src/content/
-├── site.ts          Business name, designer name, biography, contact configuration
+├── site.ts          Brand names, description, navigation, social profiles
+├── about.ts         Hero, content section, and call-to-action copy
 ├── categories.ts    Design categories and their descriptions
-└── gallery.ts       Portfolio items and their media references
+├── gallery.ts       Portfolio items and their media references
+└── runtime.ts       Public environment-variable configuration
 ```
 
 Each module exports a value constrained by an explicit TypeScript type. Presentation components receive this content through props and must not import content data directly for rendering decisions.
 
-Business configuration that must change without a code deployment — specifically the WhatsApp number — is read from a public environment variable instead, satisfying REQ-CONTACT-005.
+The module set grows with the product; the pattern does not change. Adding a section of copy means adding a module or extending one, not changing presentation logic.
+
+`runtime.ts` is the exception to "content in code": it holds values that must change without a deployment. It may only contain configuration that is safe to expose to the browser (REQ-SEC-003), such as the WhatsApp number and public social profile URLs. It must never contain a secret. Every value it reads is documented in the application's `.env.example`.
 
 Do not introduce a database, CMS, or content API for the MVP.
 
@@ -61,6 +65,7 @@ Do not introduce a database, CMS, or content API for the MVP.
 - Do not add a database, headless CMS, or content API for the MVP.
 - Do not put credentials, private client information, or the designer's phone number in committed source files.
 - Do not import content directly into leaf presentation components; pass it through props.
+- `runtime.ts` must hold only client-safe configuration. Any value that must stay on the server requires a new decision, because this module is bundled to the browser.
 - When a content-management requirement is approved, revisit this ADR rather than layering a CMS behind the existing modules.
 
 ## References
