@@ -183,9 +183,11 @@ A task is not verified merely because the code looks correct.
 3. Changes to accepted technical decisions must be recorded in the relevant ADR.
 4. New environment variables must be documented in the appropriate `.env.example`.
 5. Setup, test, lint, and build commands must be documented when established.
-6. Update documentation when implementation changes make it inaccurate.
-7. Do not mark unresolved decisions as accepted.
-8. Keep documentation concise, accurate, and consistent with the actual repository.
+6. Update documentation when implementation changes make it inaccurate, in the same change as the code.
+7. Review whether the change invalidated any statement in `docs/`, `specs/`, `AGENTS.md`, an application README, `.env.example`, or `.agents/skills/` before reporting the task complete.
+8. Project-specific agent skills describe the current design. When a visual or structural decision changes, the skill describing it must change too, or the next agent will read an outdated design and revert it.
+9. Do not mark unresolved decisions as accepted.
+10. Keep documentation concise, accurate, and consistent with the actual repository.
 
 ## 15. Definition of Done
 
@@ -198,7 +200,7 @@ A task may be considered complete when all applicable criteria are satisfied:
 - Applicable type checks, linting, tests, and builds have been executed.
 - Failures and unexecuted checks are explicitly reported.
 - Security and accessibility implications have been considered.
-- Documentation has been updated when necessary.
+- Documentation has been updated when necessary, in the same change as the code (`docs/harness.md` §6).
 - The final diff has been reviewed for unrelated or unintended changes.
 - No unresolved critical issue is being presented as completed work.
 
