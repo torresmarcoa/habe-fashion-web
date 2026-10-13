@@ -21,9 +21,11 @@ const MENU_ID = "primary-navigation";
  * Site header with primary navigation.
  *
  * REQ-NAV-001 provides access to the main sections. REQ-NAV-004 sends the
- * visitor to the corresponding section. REQ-NAV-003 keeps the navigation
- * usable at mobile, tablet, and desktop widths: the full list is shown from
- * the `md` breakpoint upward, and a toggle is used below it.
+ * visitor to the corresponding section, or to a route when the destination
+ * is a separate page.
+ * REQ-NAV-003 keeps the navigation usable at mobile, tablet, and desktop
+ * widths: the full list is shown from the `md` breakpoint upward, and a
+ * toggle is used below it.
  *
  * REQ-A11Y-001: the toggle is a real button, operable by keyboard.
  * REQ-A11Y-002: focus visibility comes from the global focus styles.
@@ -95,8 +97,8 @@ export function SiteHeader({
         >
           <ul className="flex flex-col gap-4 md:flex-row md:items-center md:gap-6 text-brand-pink">
             {navigation.map((item) => (
-              <li key={item.sectionId}>
-                <a href={`#${item.sectionId}`} onClick={() => setIsOpen(false)}>
+              <li key={item.href}>
+                <a href={item.href} onClick={() => setIsOpen(false)}>
                   {item.label}
                 </a>
               </li>

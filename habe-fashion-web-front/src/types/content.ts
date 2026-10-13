@@ -18,8 +18,25 @@ export interface SocialProfile {
 
 export interface NavigationItem {
   label: string;
-  /** Section id on the current page, e.g. "contact". */
-  sectionId: string;
+  /**
+   * Either a section anchor on the current page (`#contacto`) or an internal
+   * route (`/galeria`). Named `href` because it is not always a section.
+   */
+  href: string;
+}
+
+/**
+ * Media reference for gallery content.
+ *
+ * Declared as a Cloudinary public ID or a complete `src` for local assets, so
+ * a placeholder can be replaced by a production asset without changing the
+ * type (REQ-CONTENT-002, ADR-003).
+ */
+export interface GalleryMedia {
+  publicId?: string;
+  src?: string;
+  width: number;
+  height: number;
 }
 
 export interface SiteContent {
@@ -44,6 +61,12 @@ export interface DesignCategory {
   id: string;
   name: string;
   description: string;
+  /**
+   * Path segment used for the category route. Matches `id` by default;
+   * separate so a readable URL can differ from the internal identifier
+   * (REQ-SEO-008).
+   */
+  slug: string;
 }
 
 export interface GalleryItem {
@@ -52,11 +75,5 @@ export interface GalleryItem {
   /** Alternative text for the image (REQ-GALLERY-004, REQ-A11Y-005). */
   alt: string;
   categoryId: string;
-  /**
-   * Media reference. Production media is served from Cloudinary (ADR-003);
-   * this is a local placeholder until designer assets are delivered.
-   */
-  src: string;
-  width: number;
-  height: number;
+  media: GalleryMedia;
 }

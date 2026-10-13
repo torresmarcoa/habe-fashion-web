@@ -55,17 +55,30 @@ Every `NEXT_PUBLIC_*` value is inlined into the client bundle at build time and 
 ```text
 src/
 ├── app/
-│   ├── layout.tsx     Root layout, metadata, header, footer
-│   ├── page.tsx       Homepage
-│   └── globals.css    Brand tokens and global styles
-├── components/        Presentational components
-├── content/           Portfolio content and runtime configuration
-├── lib/               Pure helpers with no framework dependency
-├── types/             Shared TypeScript types
-tests/                 Vitest suites
+│   ├── layout.tsx              Root layout, metadata, header, footer
+│   ├── page.tsx                Homepage
+│   ├── globals.css             Brand tokens and global styles
+│   └── galeria/
+│       ├── page.tsx            Gallery index at /galeria
+│       └── [categoria]/        One static route per design category
+├── components/                 Presentational components
+├── content/                    Portfolio content and runtime configuration
+├── lib/                        Pure helpers with no framework dependency
+├── types/                      Shared TypeScript types
+tests/                          Vitest suites
 ```
 
 Portfolio content lives in `src/content/` as typed modules. Replacing placeholder content with designer-supplied content is a data-only change. See `docs/adr/ADR-007-portfolio-content.md` in the repository root.
+
+## Routes
+
+| Route | Source | Rendering |
+|---|---|---|
+| `/` | `app/page.tsx` | Static |
+| `/galeria` | `app/galeria/page.tsx` | Static |
+| `/galeria/[categoria]` | `app/galeria/[categoria]/page.tsx` | Statically generated, one path per category |
+
+Categories are defined in `src/content/categories.ts`. Adding a category adds its route automatically through `generateStaticParams`, plus its link on the homepage and in the gallery. A category with no items yet renders an honest empty state rather than being hidden.
 
 ## Notes
 

@@ -3,15 +3,15 @@ import type { GalleryItem } from "@/types/content";
 /**
  * Portfolio gallery items (REQ-GALLERY-001).
  *
- * All entries are placeholders. REQ-CONTENT-001 permits placeholder media
- * during development; production content must be replaceable with
- * designer-provided media (REQ-GALLERY-006).
+ * All entries are PLACEHOLDER pending designer assets (REQ-GALLERY-006).
  *
- * Production media will be delivered through Cloudinary (ADR-003). Each entry
- * stores a media reference, never a binary (REQ-CLOUDINARY-002). The `src`
- * values below are local SVG placeholders with no photographic content, and
- * their alternative text describes a placeholder rather than claiming to
- * depict a real garment.
+ * Media is declared by Cloudinary public ID, never as a binary or as a stored
+ * URL string (REQ-CLOUDINARY-002). Replace each `publicId` when the real
+ * photographs are delivered; the surrounding code does not change.
+ *
+ * Naming conventions for Cloudinary are still an open question in ADR-003.
+ * The ids below are placeholders that already point at a temporary banner
+ * image so the layout can be judged before the real assets exist.
  */
 export const galleryItems: GalleryItem[] = [
   {
@@ -19,26 +19,40 @@ export const galleryItems: GalleryItem[] = [
     title: "Traje de ballet",
     alt: "Marcador de posición para un traje de ballet.",
     categoryId: "ballet",
-    src: "/placeholder/ballet.svg",
-    width: 800,
-    height: 1000,
+    media: {
+      publicId: "WhatsApp_Image_2026-10-08_at_9.46.00_PM",
+      width: 800,
+      height: 1000,
+    },
   },
   {
     id: "noche-01",
     title: "Vestido de noche",
     alt: "Marcador de posición para un vestido de noche.",
     categoryId: "noche",
-    src: "/placeholder/noche.svg",
-    width: 800,
-    height: 1000,
+    media: {
+      publicId: "WhatsApp_Image_2026-10-08_at_9.46.00_PM",
+      width: 800,
+      height: 1000,
+    },
   },
   {
     id: "quinceaneras-01",
     title: "Vestido de quinceañera",
     alt: "Marcador de posición para un vestido de quinceañera.",
     categoryId: "quinceaneras",
-    src: "/placeholder/quinceaneras.svg",
-    width: 800,
-    height: 1000,
+    media: {
+      publicId: "WhatsApp_Image_2026-10-08_at_9.46.00_PM",
+      width: 800,
+      height: 1000,
+    },
   },
 ];
+
+/** Items belonging to a category, in declaration order. */
+export function itemsInCategory(categoryId: string): GalleryItem[] {
+  return galleryItems.filter((item) => item.categoryId === categoryId);
+}
+
+/** How many items the homepage teaser shows before linking to the full gallery. */
+export const homeTeaserLimit = 3;

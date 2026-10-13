@@ -85,7 +85,7 @@ it("exposes a primary navigation landmark", () => {
     for (const item of siteContent.navigation) {
       expect(screen.getByRole("link", { name: item.label })).toHaveAttribute(
         "href",
-        `#${item.sectionId}`,
+        item.href,
       );
     }
   });

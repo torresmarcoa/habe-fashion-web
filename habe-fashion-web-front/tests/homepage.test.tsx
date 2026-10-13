@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import HomePage from "@/app/page";
 import { whatContent, whoContent } from "@/content/about";
+import { designCategories } from "@/content/categories";
 import { siteContent } from "@/content/site";
 
 describe("HomePage", () => {
@@ -14,9 +15,11 @@ describe("HomePage", () => {
 
   it("renders the sections in order", () => {
     const { container } = render(<HomePage />);
-    const sections = Array.from(container.querySelectorAll("section"));
+    const ids = Array.from(container.querySelectorAll("section"))
+      .map((section) => section.id)
+      .filter(Boolean);
 
-    expect(sections.map((section) => section.id)).toEqual([
+    expect(ids).toEqual([
       "inicio",
       whoContent.id,
       whatContent.id,
@@ -32,7 +35,7 @@ describe("HomePage", () => {
     }
   });
 
-  it("provides a target for every navigation item", () => {
+  it("provides a target for every same-page navigation item", () => {
     const { container } = render(<HomePage />);
     const ids = new Set(
       Array.from(container.querySelectorAll("section")).map(
@@ -41,8 +44,33 @@ describe("HomePage", () => {
     );
 
     for (const item of siteContent.navigation) {
-      expect(ids.has(item.sectionId)).toBe(true);
+      if (!item.href.startsWith("#")) {
+        continue;
+      }
+      expect(ids.has(item.href.slice(1))).toBe(true);
     }
+  });
+
+  it("shows the gallery teaser with category links", () => {
+    render(<HomePage />);
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Galería" }),
+    ).toBeInTheDocument();
+
+    for (const category of designCategories) {
+      expect(
+        screen.getByRole("link", { name: category.name }),
+      ).toHaveAttribute("href", `/galeria/${category.slug}`);
+    }
+  });
+
+  it("links onward to the full gallery", () => {
+    render(<HomePage />);
+
+    expect(
+      screen.getByRole("link", { name: "Ver toda la galería" }),
+    ).toHaveAttribute("href", "/galeria");
   });
 
   it("renders the section headings", () => {

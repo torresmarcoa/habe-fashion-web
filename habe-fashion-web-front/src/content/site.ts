@@ -21,10 +21,11 @@ export const siteContent: SiteContent = {
   description:
     "Portfolio de moda de Hannia Farfán: vestidos de ballet, casuales, de novia, de quinceañera, de graduación y de noche.",
   navigation: [
-    { label: "Inicio", sectionId: "inicio" },
-    { label: "¿Quién soy?", sectionId: "quien-soy" },
-    { label: "¿Qué hago?", sectionId: "que-hago" },
-    { label: "Contacto", sectionId: "contacto" },
+    { label: "Inicio", href: "#inicio" },
+    { label: "¿Quién soy?", href: "#quien-soy" },
+    { label: "¿Qué hago?", href: "#que-hago" },
+    { label: "Galería", href: "/galeria" },
+    { label: "Contacto", href: "#contacto" },
   ],
   socialProfiles: [
     { platform: "instagram", label: "Instagram", url: runtimeConfig.instagramUrl },
